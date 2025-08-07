@@ -29,7 +29,7 @@ const CartCheckoutPage = () => {
 
   const submitOrder = async (orderPayload) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/orders`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderPayload),

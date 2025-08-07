@@ -19,44 +19,69 @@ const getImage = (filename) => {
 const ShopPage = () => {
   const { addToCart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/api/products`
+          `${process.env.REACT_APP_API_URL}/api/products`
         );
         setProducts(res.data);
       } catch (err) {
         console.error("❌ Failed to fetch products:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
   }, []);
+  
+  const Spinner = styled.div`
+  margin: 50px auto;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top: 4px solid black;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
 
   return (
     <Container>
       <h1>Shop Our Collection</h1>
       <Grid>
-        {products.length === 0 ? (
-          <p>No products available.</p>
-        ) : (
-          products.map((product) => (
-            <Card key={product._id}>
-              <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <img src={getImage(product.image)} alt={product.name} />
-                <h3>{product.name}</h3>
-                <p>₦{product.price}</p>
-              </Link>
-              <ButtonGroup>
-                <button onClick={() => addToCart({ ...product, quantity: 1 })}>
-                  Add to Cart
-                </button>
-              </ButtonGroup>
-            </Card>
-          ))
-        )}
-      </Grid>
+  {loading ? (
+    <Spinner />
+  ) : products.length === 0 ? (
+    <p>No products available.</p>
+  ) : (
+    products.map((product) => (
+      <Card key={product._id}>
+        <Link
+          to={`/product/${product._id}`}
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <img src={getImage(product.image)} alt={product.name} />
+          <h3>{product.name}</h3>
+          <p>₦{product.price}</p>
+        </Link>
+        <ButtonGroup>
+          <button onClick={() => addToCart({ ...product, quantity: 1 })}>
+            Add to Cart
+          </button>
+        </ButtonGroup>
+      </Card>
+    ))
+  )}
+</Grid>
+
     </Container>
   );
 };

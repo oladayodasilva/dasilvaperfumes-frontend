@@ -28,7 +28,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/products`);
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/products`);
         setProducts(res.data.slice(0, 6)); // Show only first 6 products
       } catch (err) {
         console.error("❌ Failed to fetch products:", err);

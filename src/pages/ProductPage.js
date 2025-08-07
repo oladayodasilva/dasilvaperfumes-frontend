@@ -22,7 +22,7 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/products/${id}`);
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/products/${id}`);
         setProduct(res.data);
       } catch (err) {
         console.error("❌ Failed to fetch product:", err);

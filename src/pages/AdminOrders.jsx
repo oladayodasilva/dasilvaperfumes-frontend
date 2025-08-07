@@ -9,7 +9,7 @@ const AdminOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/orders`, {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/orders`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

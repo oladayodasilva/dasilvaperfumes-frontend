@@ -7,7 +7,7 @@ const Shop = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/products`);
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/products`);
         setProducts(res.data);
       } catch (err) {
         console.error('Error fetching products:', err);
