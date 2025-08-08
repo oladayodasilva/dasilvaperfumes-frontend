@@ -36,60 +36,40 @@ const ShopPage = () => {
     };
     fetchProducts();
   }, []);
-  
-  const Spinner = styled.div`
-  margin: 50px auto;
-  width: 40px;
-  height: 40px;
-  border: 4px solid #ddd;
-  border-top: 4px solid black;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`;
 
   return (
     <Container>
       <h1>Shop Our Collection</h1>
       <Grid>
-  {loading ? (
-    <Spinner />
-  ) : products.length === 0 ? (
-    <p>No products available.</p>
-  ) : (
-    products.map((product) => (
-      <Card key={product._id}>
-        <Link
-          to={`/product/${product._id}`}
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <img src={getImage(product.image)} alt={product.name} />
-          <h3>{product.name}</h3>
-          <p>₦{product.price}</p>
-        </Link>
-        <ButtonGroup>
-          <button onClick={() => addToCart({ ...product, quantity: 1 })}>
-            Add to Cart
-          </button>
-        </ButtonGroup>
-      </Card>
-    ))
-  )}
-</Grid>
-
+        {loading ? (
+          <Spinner />
+        ) : products.length === 0 ? (
+          <p>No products available.</p>
+        ) : (
+          products.map((product) => (
+            <Card key={product._id}>
+              <Link
+                to={`/product/${product._id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <img src={getImage(product.image)} alt={product.name} />
+                <h3>{product.name}</h3>
+                <p>₦{product.price}</p>
+              </Link>
+              <ButtonGroup>
+                <button onClick={() => addToCart({ ...product, quantity: 1 })}>
+                  Add to Cart
+                </button>
+              </ButtonGroup>
+            </Card>
+          ))
+        )}
+      </Grid>
     </Container>
   );
 };
 
 export default ShopPage;
-
-// Styled Components (keep as is)
-
 
 // Styled Components
 const Container = styled.div`
@@ -140,9 +120,26 @@ const Card = styled.div`
     }
   }
 `;
+
 const ButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 10px;
+`;
+
+const Spinner = styled.div`
+  margin: 50px auto;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top: 4px solid black;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 `;
