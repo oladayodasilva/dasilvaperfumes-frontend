@@ -1,8 +1,11 @@
 // src/pages/BespokePage.js
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom"; // ✅ import hook
 
 const BespokePage = () => {
+  const navigate = useNavigate(); // ✅ initialize navigate
+
   return (
     <Container>
       <Header>
@@ -14,7 +17,7 @@ const BespokePage = () => {
 
       <Content>
         <ImageSection>
-          <img src="/assets/elixir-on-neck.jpg" alt="Custom scent" />
+          <img src="../images/IMG_4576.JPG" alt="Custom scent" />
         </ImageSection>
 
         <TextSection>
@@ -28,7 +31,8 @@ const BespokePage = () => {
 
           <CTA>
             <p>Ready to create your own fragrance?</p>
-            <button onClick={() => alert("Redirect to booking form or contact")}>
+            {/* ✅ redirect to ContactPage */}
+            <button onClick={() => navigate("/contact")}>
               Book a Consultation
             </button>
           </CTA>

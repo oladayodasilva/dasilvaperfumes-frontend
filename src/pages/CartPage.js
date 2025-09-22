@@ -3,6 +3,19 @@ import styled from "styled-components";
 import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
 
+// Reuse your image resolver
+const getImage = (filename) => {
+  if (!filename) return require("../assets/elixir-on-neck.jpg");
+  if (filename.startsWith("http") || filename.startsWith("/uploads/")) {
+    return filename;
+  }
+  try {
+    return require(`../assets/${filename}`);
+  } catch (error) {
+    return require("../assets/elixir-on-neck.jpg");
+  }
+};
+
 const CartPage = () => {
   const { cart, removeFromCart, clearCart } = useContext(CartContext);
 
@@ -20,11 +33,13 @@ const CartPage = () => {
           <CartList>
             {cart.map((item, index) => (
               <CartItem key={index}>
-                <img src={item.img} alt={item.name} />
+                <img src={item.image} alt={item.name} />
                 <div>
                   <h2>{item.name}</h2>
-                  <p>{item.price}</p>
-                  <button onClick={() => removeFromCart(item.id)}>Remove</button>
+                  <p>₦{item.price}</p>
+                  <button onClick={() => removeFromCart(item._id || item.id)}>
+                    Remove
+                  </button>
                 </div>
               </CartItem>
             ))}
@@ -37,6 +52,7 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
 
 // Styled Components
 const CartContainer = styled.div`

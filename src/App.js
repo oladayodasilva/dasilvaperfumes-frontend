@@ -1,4 +1,5 @@
-// src/App.js
+// src/App.js 
+
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -7,13 +8,12 @@ import ShopPage from "./pages/ShopPage";
 import CartCheckoutPage from "./pages/CartCheckoutPage";
 import ContactPage from "./pages/ContactPage";
 import BespokePage from "./pages/BespokePage";
-import Layout from "./components/Layout"; // ✅ new
+import Layout from "./components/Layout"; // ✅ wrapper
 import ShippingPolicy from "./pages/ShippingPolicy";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import FAQs from "./pages/FAQs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
-
 
 const App = () => {
   return (

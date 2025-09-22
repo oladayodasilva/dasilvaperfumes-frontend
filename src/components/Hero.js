@@ -1,3 +1,4 @@
+// src/components/Hero.js
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +11,7 @@ import bg4 from "../assets/clement-pola.jpg";
 import bg5 from "../assets/Magnifiscent.jpg";
 import bg6 from "../assets/intentions-in-pocket.jpg";
 
-const backgroundImages = [bg1, bg2, bg3, bg4, bg5, bg6];
+const images = [bg1, bg2, bg3, bg4, bg5, bg6];
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -18,15 +19,15 @@ const Hero = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % backgroundImages.length);
-    }, 5000); // Change image every 5 seconds
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
     <HeroSection>
-      {backgroundImages.map((img, index) => (
+      {images.map((img, index) => (
         <BackgroundImage
           key={index}
           src={img}
@@ -38,12 +39,10 @@ const Hero = () => {
       <HeroContent>
         <h1>Perfume is an Art</h1>
         <p>Discover timeless fragrances crafted with precision and passion.</p>
-        <ShopButton onClick={() => navigate("/products")}>
-          Shop Now
-        </ShopButton>
+        <ShopButton onClick={() => navigate("/products")}>Shop Now</ShopButton>
       </HeroContent>
       <DotsContainer>
-        {backgroundImages.map((_, index) => (
+        {images.map((_, index) => (
           <Dot
             key={index}
             className={index === currentImageIndex ? "active" : ""}
@@ -52,20 +51,19 @@ const Hero = () => {
         ))}
       </DotsContainer>
     </HeroSection>
-  );  
+  );
 };
-
 
 export default Hero;
 
-// Styled Components
+/* ---------------- Styled Components ---------------- */
 const HeroSection = styled.section`
   position: relative;
-  height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100vh;
 `;
 
 const BackgroundImage = styled.img`
@@ -87,41 +85,43 @@ const BackgroundImage = styled.img`
 const Overlay = styled.div`
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.35);
   z-index: 1;
 `;
 
 const HeroContent = styled.div`
-  position: relative;
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
-  max-width: 700px;
+  max-width: 500px;
   background: rgba(0, 0, 0, 0.4);
-  padding: 50px 40px;
+  padding: 30px 25px;
   border-radius: 12px;
   text-align: center;
   color: #fff;
   font-family: 'Playfair Display', serif;
 
   h1 {
-    font-size: 3.5rem;
-    margin-bottom: 20px;
+    font-size: 2rem;
+    margin-bottom: 15px;
   }
 
   p {
-    font-size: 1.3rem;
-    line-height: 1.6;
-    margin-bottom: 30px;
+    font-size: 1rem;
+    margin-bottom: 20px;
   }
 `;
 
 const ShopButton = styled.button`
-  padding: 12px 24px;
+  padding: 10px 20px;
   background: #fff;
   color: #000;
-  font-size: 16px;
+  font-size: 14px;
   border: none;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 10px;
   transition: 0.3s;
   border-radius: 6px;
 
@@ -132,7 +132,7 @@ const ShopButton = styled.button`
 
 const DotsContainer = styled.div`
   position: absolute;
-  bottom: 30px;
+  bottom: 20px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -140,11 +140,11 @@ const DotsContainer = styled.div`
 `;
 
 const Dot = styled.div`
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.5);
-  margin: 0 8px;
+  margin: 0 6px;
   cursor: pointer;
   transition: background 0.3s ease;
 

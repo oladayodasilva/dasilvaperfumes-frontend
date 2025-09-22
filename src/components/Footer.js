@@ -1,11 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as FacebookIcon } from "../assets/icons/facebook.svg";
 import { ReactComponent as TwitterIcon } from "../assets/icons/whitetwitter.svg";
 import { ReactComponent as InstagramIcon } from "../assets/icons/instagram.svg";
 import LogoImg from "../assets/Asset 1.svg"; // ✅ Update path if needed
 
+const API_BASE =
+  process.env.NODE_ENV === "production"
+    ? "https://dasilvaperfumes.com"
+    : "http://localhost:5000";
+
 const Footer = () => {
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/newsletter`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Subscription failed");
+
+      alert(data.message); // ✅ success
+      setEmail("");
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   return (
     <FooterContainer>
       <ContentWrapper>
@@ -23,8 +51,8 @@ const Footer = () => {
 
         <ContactSection>
           <ContactTitle>Send us an Email:</ContactTitle>
-          <ContactEmail href="mailto:contact@dasilvaperfumes.com">
-            contact@dasilvaperfumes.com
+          <ContactEmail href="mailto:dasilvacosmetics@yahoo.com">
+            dasilvacosmetics@yahoo.com
           </ContactEmail>
         </ContactSection>
 
@@ -56,6 +84,21 @@ const Footer = () => {
         </SocialMedia>
       </ContentWrapper>
 
+      {/* ✅ Newsletter Section */}
+      <NewsletterSection>
+        <NewsletterTitle>Join Our Newsletter</NewsletterTitle>
+        <NewsletterForm onSubmit={handleSubscribe}>
+          <NewsletterInput
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <NewsletterButton type="submit">Subscribe</NewsletterButton>
+        </NewsletterForm>
+      </NewsletterSection>
+
       <Copyright>
         &copy; {new Date().getFullYear()} Dasilva Perfumes. All rights reserved.
       </Copyright>
@@ -65,7 +108,7 @@ const Footer = () => {
 
 export default Footer;
 
-// Styled Components
+// ---------------- Styled Components ---------------- //
 
 const FooterContainer = styled.footer`
   background-color: #111;
@@ -152,6 +195,48 @@ const SocialLink = styled.a`
 
   &:hover {
     color: #f5a623;
+  }
+`;
+
+/* ✅ Newsletter Section */
+const NewsletterSection = styled.div`
+  margin-top: 30px;
+`;
+
+const NewsletterTitle = styled.h4`
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+`;
+
+const NewsletterForm = styled.form`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+`;
+
+const NewsletterInput = styled.input`
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  width: 250px;
+  max-width: 100%;
+`;
+
+const NewsletterButton = styled.button`
+  background: #f5a623;
+  color: #111;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: #d98a1d;
   }
 `;
 
