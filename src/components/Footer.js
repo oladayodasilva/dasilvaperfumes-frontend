@@ -1,9 +1,11 @@
+// src/components/Footer.js
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as FacebookIcon } from "../assets/icons/facebook.svg";
 import { ReactComponent as TwitterIcon } from "../assets/icons/whitetwitter.svg";
 import { ReactComponent as InstagramIcon } from "../assets/icons/instagram.svg";
-import LogoImg from "../assets/Asset 1.svg"; // ✅ Update path if needed
+import { ReactComponent as WhatsappIcon } from "../assets/icons/whatsapp.svg"; // ✅ New import
+import LogoImg from "../assets/Asset 1.svg";
 
 const API_BASE =
   process.env.NODE_ENV === "production"
@@ -27,7 +29,7 @@ const Footer = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Subscription failed");
 
-      alert(data.message); // ✅ success
+      alert(data.message);
       setEmail("");
     } catch (err) {
       alert(err.message);
@@ -81,10 +83,17 @@ const Footer = () => {
           >
             <InstagramIcon />
           </SocialLink>
+          <SocialLink
+            href="https://wa.me/2347010372639"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp"
+          >
+            <WhatsappIcon />
+          </SocialLink>
         </SocialMedia>
       </ContentWrapper>
 
-      {/* ✅ Newsletter Section */}
       <NewsletterSection>
         <NewsletterTitle>Join Our Newsletter</NewsletterTitle>
         <NewsletterForm onSubmit={handleSubscribe}>

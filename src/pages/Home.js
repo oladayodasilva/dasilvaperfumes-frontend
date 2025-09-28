@@ -7,23 +7,26 @@ import Hero from "../components/Hero";
 import styled from "styled-components";
 import Slider from "react-slick";
 
-// slick CSS (required for react-slick visuals)
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Collage Images (local imports)
+// Local collage images
 import collage1 from "../assets/1723282592156.jpg";
 import collage2 from "../assets/1723284066892.jpg";
 import collage3 from "../assets/1723284066343.jpg";
 import collage4 from "../assets/1723282592080.jpg";
 import collage5 from "../assets/IMG_9469.jpg";
 
-// Utility: preview image from DB product
+// ✅ Utility: safely build product preview image
 const getPreviewImage = (product) => {
-  if (Array.isArray(product.images) && product.images.length > 0) {
-    return `/images/${product.images[0]}`;
-  }
-  return "/fallback.jpg";
+  if (!product?.images?.length) return "/placeholder.jpg";
+
+  const backendUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000" // dev: React serves from /public
+      : "https://dasilvaperfumes.com"; // prod: Apache serves /public
+
+  return `${backendUrl}/images/${product.images[0]}`;
 };
 
 const Home = () => {
@@ -34,22 +37,16 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/products`
-        );
-        setProducts(res.data.slice(0, 6)); // only first 6
+        const res = await axios.get(`/api/products`);
+        setProducts(res.data.slice(0, 6));
       } catch (err) {
         console.error("❌ Failed to fetch products:", err);
       }
     };
-
     fetchProducts();
   }, []);
 
-  // Public URL prefix (works in dev + production)
   const publicPath = process.env.PUBLIC_URL || "";
-
-  // Build reviews array from public folder filenames
   const reviews = Array.from({ length: 9 }).map(
     (_, i) => `${publicPath}/images/reviews/review${i + 1}.jpg`
   );
@@ -241,7 +238,7 @@ const ReviewsSection = styled.section`
 const SliderWrapper = styled.div`
   max-width: 1000px;
   margin: 0 auto;
-  .slick-list { /* ensure slides are centered */
+  .slick-list {
     padding: 10px 0;
   }
 `;
@@ -251,14 +248,14 @@ const ReviewCard = styled.div`
   display: flex !important;
   justify-content: center;
   align-items: center;
-  height: 300px; /* fixed height so all images same size */
+  height: 300px;
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain; /* contain works well for screenshots */
+    object-fit: contain;
     display: block;
     border-radius: 8px;
   }
@@ -278,11 +275,19 @@ const CollageSection = styled.div`
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease;
-    &:hover { transform: scale(1.02); }
+    &:hover {
+      transform: scale(1.02);
+    }
   }
-  .portrait { grid-row: span 2; }
-  .landscape { grid-column: span 2; }
-  .square { aspect-ratio: 1 / 1; }
+  .portrait {
+    grid-row: span 2;
+  }
+  .landscape {
+    grid-column: span 2;
+  }
+  .square {
+    aspect-ratio: 1 / 1;
+  }
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
