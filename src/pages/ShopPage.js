@@ -4,17 +4,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CartContext } from "../context/CartContext";
 import styled from "styled-components";
+import { API_BASE_URL } from "../config";
 
 // ✅ Utility: safely build product preview image
 const getPreviewImage = (product) => {
   if (!product?.images?.length) return "/placeholder.jpg";
-
-  const backendUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://dasilvaperfumes.com";
-
-  return `${backendUrl}/images/${product.images[0]}`;
+  return `/images/${product.images[0]}`; // served from /public/images
 };
 
 const ShopPage = () => {
@@ -25,7 +20,7 @@ const ShopPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(`/api/products`);
+        const res = await axios.get(`${API_BASE_URL}/api/products`);
         setProducts(res.data);
       } catch (err) {
         console.error("❌ Failed to fetch products:", err);

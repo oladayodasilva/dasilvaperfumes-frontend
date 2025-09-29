@@ -1,13 +1,18 @@
+// src/pages/Product.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-// Helper to handle different image sources
-const imgSrc = (value) => {
-  if (!value) return "/fallback.jpg";
-  if (value.startsWith("http")) return value; // Cloudinary / external
-  if (value.startsWith("/")) return value; // public relative
-  return `/images/${value}`; // bare filename fallback
+// ✅ Utility: safely build image URLs
+const getImageUrl = (filename) => {
+  if (!filename) return "/fallback.jpg";
+
+  const baseUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "https://dasilvaperfumes.com";
+
+  return `${baseUrl}/images/${filename}`;
 };
 
 const Shop = () => {
@@ -16,10 +21,8 @@ const Shop = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/products`
-        );
-        const data = res.data.products || res.data; // support both
+        const res = await axios.get(`/api/products`);
+        const data = res.data.products || res.data;
         setProducts(data);
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -36,7 +39,7 @@ const Shop = () => {
         {products.map((product) => {
           const preview =
             product.images && product.images.length > 0
-              ? imgSrc(product.images[0]) // ✅ show only first image
+              ? getImageUrl(product.images[0])
               : "/fallback.jpg";
 
           return (

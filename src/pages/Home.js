@@ -6,6 +6,7 @@ import { CartContext } from "../context/CartContext";
 import Hero from "../components/Hero";
 import styled from "styled-components";
 import Slider from "react-slick";
+import { API_BASE_URL } from "../config";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -20,13 +21,7 @@ import collage5 from "../assets/IMG_9469.jpg";
 // ✅ Utility: safely build product preview image
 const getPreviewImage = (product) => {
   if (!product?.images?.length) return "/placeholder.jpg";
-
-  const backendUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000" // dev: React serves from /public
-      : "https://dasilvaperfumes.com"; // prod: Apache serves /public
-
-  return `${backendUrl}/images/${product.images[0]}`;
+  return `/images/${product.images[0]}`; // served from /public/images
 };
 
 const Home = () => {
@@ -37,7 +32,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(`/api/products`);
+        const res = await axios.get(`${API_BASE_URL}/api/products`);
         setProducts(res.data.slice(0, 6));
       } catch (err) {
         console.error("❌ Failed to fetch products:", err);

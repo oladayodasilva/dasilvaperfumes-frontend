@@ -1,8 +1,21 @@
+// src/pages/ProductPage.js
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import { CartContext } from "../context/CartContext";
+
+// ✅ Utility: safely build image URLs
+const getImageUrl = (filename) => {
+  if (!filename) return "/fallback.jpg";
+
+  const baseUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000" // dev: React serves /public
+      : "https://dasilvaperfumes.com"; // prod: Apache serves /public
+
+  return `${baseUrl}/images/${filename}`;
+};
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -14,9 +27,7 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/products/${id}`
-        );
+        const res = await axios.get(`/api/products/${id}`);
         setProduct(res.data);
       } catch (err) {
         console.error("❌ Failed to fetch product:", err);
@@ -32,7 +43,7 @@ const ProductPage = () => {
 
   const rawImages =
     Array.isArray(product.images) && product.images.length > 0
-      ? product.images.map((img) => `/images/${img}`)
+      ? product.images.map((img) => getImageUrl(img))
       : [];
 
   const hasImages = rawImages.length > 0;
