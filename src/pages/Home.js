@@ -6,8 +6,6 @@ import { CartContext } from "../context/CartContext";
 import Hero from "../components/Hero";
 import styled from "styled-components";
 import Slider from "react-slick";
-import { API_BASE_URL } from "../config";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -32,7 +30,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/api/products`);
+        const res = await axios.get('https://dasilva-backend.onrender.com/api/products')
         setProducts(res.data.slice(0, 6));
       } catch (err) {
         console.error("❌ Failed to fetch products:", err);
